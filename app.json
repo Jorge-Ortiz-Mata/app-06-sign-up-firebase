@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "myapp",
-    "slug": "myapp",
+    "name": "app-06-sign-up-firebase",
+    "slug": "app-06-sign-up-firebase",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
