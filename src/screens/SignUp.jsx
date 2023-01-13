@@ -3,13 +3,25 @@ import CustomInput from "../components/CustomInput";
 import CustomLabel from "../components/CustomLabel";
 import CustomButton from "../components/CustomButton";
 import { useNavigation } from "@react-navigation/native";
+import { useState } from "react";
 
 export default function SignUp(){
   const navigation = useNavigation();
+  const [credentials, setCredentials] = useState({
+    email: '', password: '', confirmPassword: ''
+  });
 
   function changeScreen(){
     navigation.replace('Login')
   }
+
+  function handleLoginCredentials(value, name){
+    setCredentials(prevState => ({
+      ...prevState, [name]: value
+    }))
+  }
+
+  console.log(credentials)
 
   return(
     <View className="flex-1 justify-center">
@@ -17,17 +29,17 @@ export default function SignUp(){
 
       <View className="m-5">
         <CustomLabel text="Enter your email:" />
-        <CustomInput />
+        <CustomInput handleCredentials={handleLoginCredentials} name="email" />
       </View>
 
       <View className="m-5">
         <CustomLabel text="Enter your password:" />
-        <CustomInput />
+        <CustomInput handleCredentials={handleLoginCredentials} name="password" />
       </View>
 
       <View className="m-5">
         <CustomLabel text="Confirm your password:" />
-        <CustomInput />
+        <CustomInput handleCredentials={handleLoginCredentials} name="confirmPassword" />
       </View>
 
       <View className="m-5 items-center justify-center">

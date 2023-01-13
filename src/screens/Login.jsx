@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { View, Text, Pressable } from "react-native";
 import CustomInput from "../components/CustomInput";
 import CustomLabel from "../components/CustomLabel";
@@ -6,9 +7,18 @@ import { useNavigation } from "@react-navigation/native";
 
 export default function Login(){
   const navigation = useNavigation();
+  const [credentials, setCredentials] = useState({
+    email: '', password: ''
+  });
 
   function changeScreen(){
     navigation.replace('SignUp')
+  }
+
+  function handleLoginCredentials(value, name){
+    setCredentials(prevState => ({
+      ...prevState, [name]: value
+    }))
   }
 
   return(
@@ -17,12 +27,12 @@ export default function Login(){
 
       <View className="m-5">
         <CustomLabel text="Enter your email:" />
-        <CustomInput />
+        <CustomInput handleCredentials={handleLoginCredentials} name="email" />
       </View>
 
       <View className="m-5">
         <CustomLabel text="Enter your password:" />
-        <CustomInput />
+        <CustomInput handleCredentials={handleLoginCredentials} name="password" />
       </View>
 
       <View className="m-5 items-center justify-center">
