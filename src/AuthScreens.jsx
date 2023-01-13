@@ -8,7 +8,7 @@ export default function AuthScreens() {
   return(
     <Stack.Navigator initialRouteName='Login'>
       <Stack.Screen name='Login' component={Login} />
-      <Stack.Screen name='Signup' component={SignUp} />
+      <Stack.Screen name='SignUp' component={SignUp} />
     </Stack.Navigator>
   )
 }
