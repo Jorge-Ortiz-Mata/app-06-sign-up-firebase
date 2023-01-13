@@ -1,12 +1,15 @@
+import { useState } from "react";
 import { View, Text, Pressable } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import CustomInput from "../components/CustomInput";
 import CustomLabel from "../components/CustomLabel";
 import CustomButton from "../components/CustomButton";
-import { useNavigation } from "@react-navigation/native";
-import { useState } from "react";
+import LoaderOverlay from "../components/LoaderOverlay";
+import { createUser } from '../../util/auth'
 
 export default function SignUp(){
   const navigation = useNavigation();
+  const [isAuthenticating, setIsAuthenticating] = useState(false);
   const [credentials, setCredentials] = useState({
     email: '', password: '', confirmPassword: ''
   });
@@ -21,7 +24,13 @@ export default function SignUp(){
     }))
   }
 
-  console.log(credentials)
+  async function signUpFunction(){
+    setIsAuthenticating(true);
+    await createUser(credentials.email, credentials.password);
+    setIsAuthenticating(false)
+  }
+
+  if(isAuthenticating) return <LoaderOverlay />
 
   return(
     <View className="flex-1 justify-center">
@@ -43,7 +52,7 @@ export default function SignUp(){
       </View>
 
       <View className="m-5 items-center justify-center">
-        <CustomButton text="Sign Up" />
+        <CustomButton text="Sign Up" sendData={signUpFunction} />
       </View>
 
       <Pressable className="justify-center items-center mt-5" onPress={changeScreen}>

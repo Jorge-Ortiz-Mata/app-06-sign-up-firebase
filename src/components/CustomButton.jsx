@@ -1,8 +1,8 @@
 import { Button } from "react-native"
 
-export default function CustomButton({text}){
+export default function CustomButton({text, sendData}){
 
   return(
-    <Button title={text} onPress={() => { console.log('Pressed') }} />
+    <Button title={text} onPress={sendData} />
   )
 }
