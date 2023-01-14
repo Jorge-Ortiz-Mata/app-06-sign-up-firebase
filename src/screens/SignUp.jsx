@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useAtom } from 'jotai';
 import { View, Text, Pressable, Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import CustomInput from "../components/CustomInput";
@@ -6,9 +7,11 @@ import CustomLabel from "../components/CustomLabel";
 import CustomButton from "../components/CustomButton";
 import LoaderOverlay from "../components/LoaderOverlay";
 import { createUser } from '../../util/auth'
+import { userAtom } from '../../store/JotaiVariables';
 
 export default function SignUp(){
   const navigation = useNavigation();
+  const [user, setUser] = useAtom(userAtom);
   const [isAuthenticating, setIsAuthenticating] = useState(false);
   const [credentials, setCredentials] = useState({
     email: '', password: '', confirmPassword: ''
@@ -27,7 +30,8 @@ export default function SignUp(){
   async function signUpFunction(){
     setIsAuthenticating(true);
     try {
-      await createUser(credentials.email, credentials.password);
+      const response = await createUser(credentials.email, credentials.password);
+      setUser({email: response.data.email, token: response.data.idToken})
     } catch {
       Alert.alert('Authentication failed', 'An error ocurred. Try later again.')
     }

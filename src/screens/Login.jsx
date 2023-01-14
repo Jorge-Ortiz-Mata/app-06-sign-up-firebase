@@ -1,3 +1,4 @@
+import { useAtom } from 'jotai';
 import { useState } from "react";
 import { View, Text, Pressable, Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
@@ -8,9 +9,11 @@ import CustomLabel from "../components/CustomLabel";
 import CustomButton from "../components/CustomButton";
 
 import { authenticateUser } from "../../util/auth";
+import { userAtom } from '../../store/JotaiVariables';
 
 export default function Login(){
   const navigation = useNavigation();
+  const [user, setUser] = useAtom(userAtom);
   const [isAuthenticating, setIsAuthenticating] = useState(false);
   const [credentials, setCredentials] = useState({
     email: '', password: ''
@@ -26,10 +29,11 @@ export default function Login(){
     }))
   }
 
-  async function signUpFunction(){
+  async function LoginFunction(){
     setIsAuthenticating(true);
     try {
-      await authenticateUser(credentials.email, credentials.password);
+      const response = await authenticateUser(credentials.email, credentials.password);
+      setUser({email: response.data.email, token: response.data.idToken})
     } catch {
       Alert.alert('Authentication failed', 'An error ocurred. Try later again.')
     }
@@ -53,7 +57,7 @@ export default function Login(){
       </View>
 
       <View className="m-5 items-center justify-center">
-        <CustomButton text="Login" sendData={signUpFunction} />
+        <CustomButton text="Login" sendData={LoginFunction} />
       </View>
 
       <Pressable className="justify-center items-center mt-5" onPress={changeScreen}>

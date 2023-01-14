@@ -6,7 +6,6 @@ import { userAtom } from '../store/JotaiVariables';
 
 export default function Index() {
   const [user] = useAtom(userAtom);
-  console.log(user)
 
   return (
     <NavigationContainer>
