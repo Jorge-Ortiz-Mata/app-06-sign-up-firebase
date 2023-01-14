@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { View, Text, Pressable } from "react-native";
+import { View, Text, Pressable, Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import CustomInput from "../components/CustomInput";
 import CustomLabel from "../components/CustomLabel";
@@ -26,7 +26,11 @@ export default function SignUp(){
 
   async function signUpFunction(){
     setIsAuthenticating(true);
-    await createUser(credentials.email, credentials.password);
+    try {
+      await createUser(credentials.email, credentials.password);
+    } catch {
+      Alert.alert('Authentication failed', 'An error ocurred. Try later again.')
+    }
     setIsAuthenticating(false)
   }
 

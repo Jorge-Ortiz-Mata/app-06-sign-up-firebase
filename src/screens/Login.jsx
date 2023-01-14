@@ -1,12 +1,17 @@
 import { useState } from "react";
-import { View, Text, Pressable } from "react-native";
+import { View, Text, Pressable, Alert } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+
+import LoaderOverlay from "../components/LoaderOverlay";
 import CustomInput from "../components/CustomInput";
 import CustomLabel from "../components/CustomLabel";
 import CustomButton from "../components/CustomButton";
-import { useNavigation } from "@react-navigation/native";
+
+import { authenticateUser } from "../../util/auth";
 
 export default function Login(){
   const navigation = useNavigation();
+  const [isAuthenticating, setIsAuthenticating] = useState(false);
   const [credentials, setCredentials] = useState({
     email: '', password: ''
   });
@@ -20,6 +25,18 @@ export default function Login(){
       ...prevState, [name]: value
     }))
   }
+
+  async function signUpFunction(){
+    setIsAuthenticating(true);
+    try {
+      await authenticateUser(credentials.email, credentials.password);
+    } catch {
+      Alert.alert('Authentication failed', 'An error ocurred. Try later again.')
+    }
+    setIsAuthenticating(false)
+  }
+
+  if(isAuthenticating) return <LoaderOverlay />
 
   return(
     <View className="flex-1 justify-center">
@@ -36,7 +53,7 @@ export default function Login(){
       </View>
 
       <View className="m-5 items-center justify-center">
-        <CustomButton text="Login" />
+        <CustomButton text="Login" sendData={signUpFunction} />
       </View>
 
       <Pressable className="justify-center items-center mt-5" onPress={changeScreen}>
