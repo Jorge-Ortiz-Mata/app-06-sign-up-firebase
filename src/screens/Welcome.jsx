@@ -3,13 +3,15 @@ import { View, Text, Button } from "react-native";
 import { userAtom } from "../../store/JotaiVariables";
 import { useEffect, useState } from 'react';
 import { getMessage } from '../../util/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Welcome(){
   const [user, setUser] = useAtom(userAtom);
   const [message, setMessage] = useState('');
 
-  function deleteSession(){
-    setUser(null)
+  async function deleteSession(){
+    await AsyncStorage.removeItem('userStore');
+    setUser(null);
   }
 
   useEffect(() => {

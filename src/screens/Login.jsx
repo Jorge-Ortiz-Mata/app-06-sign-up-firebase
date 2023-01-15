@@ -10,6 +10,7 @@ import CustomButton from "../components/CustomButton";
 
 import { authenticateUser } from "../../util/auth";
 import { userAtom } from '../../store/JotaiVariables';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Login(){
   const navigation = useNavigation();
@@ -33,7 +34,8 @@ export default function Login(){
     setIsAuthenticating(true);
     try {
       const response = await authenticateUser(credentials.email, credentials.password);
-      setUser({email: response.data.email, token: response.data.idToken})
+      await AsyncStorage.setItem('userStore', JSON.stringify({email: response.data.email, token: response.data.idToken}));
+      setUser({email: response.data.email, token: response.data.idToken});
     } catch {
       Alert.alert('Authentication failed', 'An error ocurred. Try later again.')
     }
