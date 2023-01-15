@@ -13,3 +13,8 @@ export async function authenticateUser(email, password){
   const response = await axios.post(LOGIN_URL, {email: email, password: password, returnSecureToken: true});
   return response;
 }
+
+export function getMessage(user){
+  const response = axios.get(`https://react-sign-up-firebase-default-rtdb.firebaseio.com/message.json?auth=${user.token}`)
+  return response;
+}
